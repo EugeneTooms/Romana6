@@ -1,0 +1,7 @@
+{
+"host" : "localhost",
+"user" : "Xabaras",
+"password" : "myh8red",
+"database": "ugo",
+"charset" : "utf8"
+}
