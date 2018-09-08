@@ -5,9 +5,10 @@ const router = express.Router();
 const databaseconfig = require('../../config/databaseconnection')
 const databaseconnection = databaseconfig.getDBconnection();
 
-router.get('/', function(req, res, next){
+router.get('/',
+(req, res, next) =>{
   databaseconnection.query(`SELECT * FROM ugo.articles`,
-      function(error, artikli){
+      (error, artikli) =>{
               if(error) {
                   return res.status(500).json({
                       title: 'An error has occured',

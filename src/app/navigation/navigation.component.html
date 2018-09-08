@@ -5,12 +5,15 @@
     </span>
     <span class="spacer"></span>
     <ul>
-      <li>
+      <li *ngIf="userIsAuthenticated">
+        <a mat-button (click)="LogOut()">Logout</a>
+      </li>
+      <li *ngIf="!userIsAuthenticated">
         <a mat-button routerLink="/login" routerLinkActive="mat-accent">Login</a>
       </li>
     </ul>
   </mat-toolbar-row>
-  <mat-toolbar-row>
+  <mat-toolbar-row *ngIf="userIsAuthenticated">
       <button mat-button [matMenuTriggerFor]="Ulazi">Ulazi</button>
       <!-- <button mat-button [matMenuTriggerFor]="Izlazi">Izlazi</button>
       <button mat-button [matMenuTriggerFor]="Settings">Settings</button> -->
