@@ -1,0 +1,13 @@
+mat-grid-list{
+  position: relative;
+}
+
+mat-card{
+  position:absolute;
+  top:1rem;
+  width: 90%;
+  max-height: 80%;
+  overflow: auto;
+}
+
+
