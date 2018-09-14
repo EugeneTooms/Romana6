@@ -1,13 +1,15 @@
-mat-grid-list{
-  position: relative;
-}
-
 mat-card{
-  position:absolute;
-  top:1rem;
-  width: 90%;
-  max-height: 80%;
-  overflow: auto;
+  margin: auto;
+  display: flex;
+  width: 95%;
+}
+.col {
+  float: left;
+}
+.left {
+  flex: 75%;
 }
 
-
+.right {
+  flex: 25%;
+}

@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
+import { ArticlesService } from '../articles.service';
 
 export interface PeriodicElement {
   name: string;
@@ -33,9 +34,13 @@ export class ArticlesListComponent implements OnInit {
   pageSizeOpts = [1, 2, 5, 10];
   displayedColumns: string[] = ['position', 'name' , 'Select', 'Edit', 'Delete'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
+
+  constructor (public articlesService: ArticlesService) {}
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit() {
+    this.articlesService.getArticles();
     this.dataSource.paginator = this.paginator;
   }
 
