@@ -1,4 +1,4 @@
-export class Article {
+export interface Article {
   id: number;
   barcode: string;
   tax_group_id: number;
