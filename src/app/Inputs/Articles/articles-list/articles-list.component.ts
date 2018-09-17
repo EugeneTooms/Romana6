@@ -14,6 +14,7 @@ import { Article } from '../article.model';
 export class ArticlesListComponent implements OnInit, OnDestroy {
   articles: Article[] = [];
   private artSub: Subscription;
+  isLoading = true;
 
   displayedColumns: string[] = ['id', 'name' , 'Select', 'Edit', 'Delete', 'Add'];
   dataSource = new MatTableDataSource(this.articles);
@@ -29,6 +30,7 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
         this.articles = articles;
         this.dataSource.data = this.articles;
         this.dataSource.paginator = this.paginator;
+        this.isLoading = false;
       });
   }
 
@@ -38,5 +40,8 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.artSub.unsubscribe();
+  }
+  DeleteArticle(id: number) {
+    this.articlesService.deleteArticle(id);
   }
 }

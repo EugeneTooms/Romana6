@@ -20,13 +20,20 @@
 
 <mat-menu #Ulazi="matMenu">
   <button mat-menu-item [matMenuTriggerFor]="Artikli" >Artikli</button>
+  <button mat-menu-item [matMenuTriggerFor]="Suppliers" >Suppliers</button>
   <!-- <button mat-menu-item [matMenuTriggerFor]="Normativi">Normativi</button> -->
 </mat-menu>
 
 <mat-menu #Artikli="matMenu">
-  <button mat-menu-item routerLink="/inputs/articles" routerLinkActive="mat-accent">New</button>
+  <button mat-menu-item routerLink="/inputs/articles" routerLinkActive="mat-accent">List</button>
+  <button mat-menu-item routerLink="/inputs/articles/create" routerLinkActive="mat-accent">New</button>
   <!-- <button mat-menu-item>Lista</button> -->
 </mat-menu>
+<mat-menu #Suppliers="matMenu">
+    <button mat-menu-item routerLink="/inputs/suppliers" routerLinkActive="mat-accent">List</button>
+    <button mat-menu-item routerLink="/inputs/suppliers/create" routerLinkActive="mat-accent">New</button>
+    <!-- <button mat-menu-item>Lista</button> -->
+  </mat-menu>
 
 <!-- <mat-menu #Normativi="matMenu">
   <button mat-menu-item>New</button>

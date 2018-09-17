@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Article } from './article.model';
 
 
 export interface Tile {
@@ -20,4 +21,5 @@ export class ArticlesComponent {
     {cols: 3, rows: 3, color: '#f2f2f2'}
   ];
 
+  selectedArticle: Article;
 }

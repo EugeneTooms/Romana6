@@ -20,10 +20,27 @@ export class ArticlesService {
         this.articlesUpdated.next([...this.articles]);
       });
   }
+  getArticle(id: number) {
+    return {...this.articles.find(article => article.id === id)};
+  }
   getArticlesListener() {
     return this.articlesUpdated.asObservable();
   }
-  addArticle() {
-    this.articlesUpdated.next([...this.articles]);
+  addArticle(article: Article) {
+    this.http.post<{message: string, data: number}>(BACKEND_URL, article)
+      .subscribe( (responseData) => {
+        article.id = responseData.data;
+        this.articles.push(article);
+        this.articlesUpdated.next([...this.articles]);
+      });
+  }
+  deleteArticle(article_id: number) {
+    this.http.delete<{message: string, data: any}>(BACKEND_URL + article_id)
+      .subscribe( (responseData) => {
+        console.log(responseData);
+        const updateArticles = this.articles.filter( article => article.id !== article_id);
+        this.articles = updateArticles;
+        this.articlesUpdated.next([...this.articles]);
+      });
   }
 }

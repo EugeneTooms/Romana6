@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { InputsRoutingModule } from './inputs-routing.module';
+import { OutputsRoutingModule } from './outputs-routing.module';
 
 @NgModule ({
   imports: [
     CommonModule,
-    InputsRoutingModule
+    OutputsRoutingModule
   ]
 })
-export class InputsModule {}
+export class OutputsModule {}
