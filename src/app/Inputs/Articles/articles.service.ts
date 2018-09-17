@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { environment} from '../../../environments/environment';
 import { Article } from './article.model';
-
 
 const BACKEND_URL = environment.apiURL + 'articles/';
 @Injectable({providedIn : 'root'})
@@ -11,7 +11,7 @@ export class ArticlesService {
   private articles: Article[] = [];
   private articlesUpdated = new Subject<Article[]>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   getArticles() {
     this.http.get<{message: string, data: Article[]}>(BACKEND_URL)
@@ -32,6 +32,7 @@ export class ArticlesService {
         article.id = responseData.data;
         this.articles.push(article);
         this.articlesUpdated.next([...this.articles]);
+        this.router.navigate(['/inputs/articles']);
       });
   }
   deleteArticle(article_id: number) {

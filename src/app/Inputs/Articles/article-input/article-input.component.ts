@@ -18,10 +18,10 @@ export class ArticleInputComponent implements OnInit, OnDestroy {
   suppliers: Supplier[] = [];
   private suppliersSub: Subscription;
   isLoading = true;
+  isLinear = true;
   private mode = 'create';
   private articleId: number;
   formGroup: FormGroup;
-
   get formArray(): AbstractControl | null { return this.formGroup.get('formArray'); }
 
   constructor(
@@ -68,6 +68,7 @@ export class ArticleInputComponent implements OnInit, OnDestroy {
         this.articleId = +paramMap.get('articleId');
         this.article = this.articlesService.getArticle(this.articleId);
         this.isLoading = false;
+        this.isLinear = false;
         this.formArray.get('0').setValue({
           name: this.article.name,
           tax_group_id: this.article.tax_group_id,
@@ -101,7 +102,7 @@ export class ArticleInputComponent implements OnInit, OnDestroy {
     }
     this.article = {
       // required
-      id: null,
+      id: null, // will get back id from the database
       name: this.formArray.get('0').value.name,
       tax_group_id: this.formArray.get('0').value.tax_group_id,
       price_buy: this.formArray.get('0').value.price_buy,

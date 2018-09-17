@@ -1,3 +1,4 @@
+<mat-card>
 <mat-spinner *ngIf='isLoading'></mat-spinner>
 <mat-form-field>
   <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
@@ -56,5 +57,6 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"> </tr>
 </table>
-<mat-paginator [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 </div>
+</mat-card>

@@ -2,11 +2,14 @@
 table {
   width: 100%;
 }
-
 .mat-form-field {
   font-size: 14px;
   width: 100%;
 }
 mat-spinner{
+  margin: auto;
+}
+mat-card{
+  width: 90%;
   margin: auto;
 }

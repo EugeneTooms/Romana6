@@ -6,13 +6,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { SuppliersRoutingModule } from './suppliers-routing.module';
 import { SuppliersListComponent } from './suppliers-list/suppliers-list.component';
+import { SupplierInputComponent } from './supplier-input/supplier-input.component';
 
 
 
 
 @NgModule({
   declarations: [
-    SuppliersListComponent
+    SuppliersListComponent,
+    SupplierInputComponent
   ],
   imports: [CommonModule,
     AngularMaterialModule,

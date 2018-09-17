@@ -1,7 +1,7 @@
 <mat-card>
   <mat-spinner *ngIf='isLoading'></mat-spinner>
   <form *ngIf='!isLoading' [formGroup]="formGroup">
-<mat-vertical-stepper [linear]="true" #stepper formArrayName="formArray">
+<mat-vertical-stepper [linear]="isLinear" #stepper formArrayName="formArray">
   <mat-step formGroupName="0" [stepControl]="formArray?.get([0])">
       <ng-template matStepLabel>Required Fields</ng-template>
       <div>

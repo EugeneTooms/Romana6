@@ -21,7 +21,9 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource(this.suppliers);
 
   constructor (public suppliersService: SuppliersService) {}
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
+
   ngOnInit() {
     this.suppliersService.getSuppliers();
     this.suppliersSub = this.suppliersService.getSuppliersListener()
@@ -36,7 +38,7 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
   DeleteSupplier(id: number) {
-
+    this.suppliersService.deleteSupplier(id);
   }
   ngOnDestroy() {
     this.suppliersSub.unsubscribe();
