@@ -35,7 +35,7 @@ export class ArticleInputComponent implements OnInit, OnDestroy {
     this.suppliersSub = this.suppliersService.getSuppliersListener()
       .subscribe((suppliers: Supplier[]) => {
         this.suppliers = suppliers;
-      });
+      }, () => {this.isLoading = false; } );
   }
   ngOnInit() {
     this.fetchSuppliers();

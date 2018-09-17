@@ -31,7 +31,7 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
         this.dataSource.data = this.articles;
         this.dataSource.paginator = this.paginator;
         this.isLoading = false;
-      });
+      }, () => {this.isLoading = false; });
   }
 
   applyFilter(filterValue: string) {

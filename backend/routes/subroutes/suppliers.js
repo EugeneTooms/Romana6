@@ -30,7 +30,7 @@ router.get('', checkAuth,
       }
     ).catch( err => {
       return res.status(500).json({
-        title: 'An error has occured',
+        message: 'Could not retrive suppliers',
         error : err
       });
     });
@@ -51,7 +51,7 @@ router.post('', checkAuth,
     })
     .catch( err => {
       return res.status(500).json({
-        title: 'An error has occured',
+        message: 'Insert failed!',
         error: err
       })
     });
@@ -68,7 +68,7 @@ router.post('', checkAuth,
       })
       .catch( err => {
         return res.status(500).json({
-          title: 'An error has occured',
+          message: 'Delete failed!',
           error: err
         })
       });

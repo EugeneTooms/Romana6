@@ -32,7 +32,7 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
         this.dataSource.data = this.suppliers;
         this.dataSource.paginator = this.paginator;
         this.isLoading = false;
-      });
+      }, () => {this.isLoading = false; });
   }
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();

@@ -50,6 +50,8 @@ export class AuthService {
           this.saveAuthData(token, expirationDate);
           this.router.navigate(['/']);
         }
+      }, (error) => {
+        this.authStatusListener.next(false);
       });
   }
   logout() {

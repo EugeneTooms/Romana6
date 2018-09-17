@@ -29,7 +29,7 @@ router.post('/login', (req, res, next) =>{
             });
     }).catch( err => {
       return res.status(500).json({
-        title: 'An error has occured',
+        message: 'Authorization failed',
         error : err
       });
     });;
