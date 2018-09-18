@@ -4,22 +4,24 @@ const router = express.Router();
 
 const checkAuth = require('../../middleware/check-auth');
 const Database = require('../../config/database');
-const database = new Database();
 
 router.get('', checkAuth,
 (req, res, next) =>{
+  let database = new Database();
   database.query(`SELECT
   id, barcode, tax_group_id, amount, price_buy, price_sell, unit, name, display, prikaz_group_id, art_show_gr_id, supplier_id, qty, box_qty, img_src
  FROM ugo.articles
  Left Join bot_articles_details on article_id = id;
   `)
     .then( (artikli) =>{
+      database.close();
         res.status(200).json({
           message: 'Success',
           data: artikli
         });
       }
     ).catch( err => {
+      database.close();
       return res.status(500).json({
         messgae: 'Could not retrive articles',
         error : err
@@ -29,6 +31,7 @@ router.get('', checkAuth,
 
 router.post('', checkAuth,
   (req,res, next) => {
+    let database = new Database();
     let insertId = 0;
     let jsonMaster = {
       name : req.body.name,
@@ -55,13 +58,14 @@ router.post('', checkAuth,
       return database.query(`INSERT INTO bot_articles_details SET ?`, jsonDetails);
     })
     .then( () => {
+      database.close();
       res.status(200).json({
         message: 'Success',
         data: insertId
       });
     })
     .catch( err => {
-      console.log(err);
+      database.close();
       return res.status(500).json({
         message: 'Insert failed!',
         error: err
@@ -71,6 +75,7 @@ router.post('', checkAuth,
 
   router.put('/:id', checkAuth,
   (req,res,next) => {
+    let database = new Database();
     database.query(`UPDATE articles SET
     barcode = ?,
     name = ?,
@@ -105,12 +110,14 @@ router.post('', checkAuth,
         req.params.id]);
     })
     .then( (results) => {
+      database.close();
       res.status(200).json({
         message: 'Success',
         data: results
       });
     })
     .catch( err => {
+      database.close();
       return res.status(500).json({
         message: 'Update failed!',
         error: err
@@ -119,14 +126,17 @@ router.post('', checkAuth,
 });
   router.delete('/:id', checkAuth,
     (req,res,next) => {
+      let database = new Database();
       database.query('DELETE FROM articles WHERE id = ?', req.params.id )
       .then((results) =>{
+        database.close();
         res.status(200).json({
           message: 'Success',
           data: results
         });
       })
       .catch( err => {
+        database.close();
         return res.status(500).json({
           message: 'Delete failed!',
           error: err
