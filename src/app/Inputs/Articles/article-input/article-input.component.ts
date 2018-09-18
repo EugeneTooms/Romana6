@@ -100,26 +100,49 @@ export class ArticleInputComponent implements OnInit, OnDestroy {
     if (this.formArray.invalid) {
       return;
     }
-    this.article = {
-      // required
-      id: null, // will get back id from the database
-      name: this.formArray.get('0').value.name,
-      tax_group_id: this.formArray.get('0').value.tax_group_id,
-      price_buy: this.formArray.get('0').value.price_buy,
-      price_sell: this.formArray.get('0').value.price_sell,
-      unit: this.formArray.get('0').value.unit,
-      art_show_gr_id: this.formArray.get('0').value.art_show_gr_id,
-      prikaz_group_id: this.formArray.get('0').value.prikaz_group_id,
-      // Optional
-      barcode: this.formArray.get('1').value.barcode,
-      display: this.formArray.get('1').value.display,
-      img_src: this.formArray.get('1').value.img,
-      // Ordering
-      supplier_id: this.formArray.get('2').value.supplier_id,
-      box_qty: this.formArray.get('2').value.box_qty,
-      qty: this.formArray.get('2').value.qty
-    };
-    this.articlesService.addArticle(this.article);
+    if (this.mode === 'create') {
+      this.article = {
+        // required
+        id: null, // will get back id from the database
+        name: this.formArray.get('0').value.name,
+        tax_group_id: this.formArray.get('0').value.tax_group_id,
+        price_buy: this.formArray.get('0').value.price_buy,
+        price_sell: this.formArray.get('0').value.price_sell,
+        unit: this.formArray.get('0').value.unit,
+        art_show_gr_id: this.formArray.get('0').value.art_show_gr_id,
+        prikaz_group_id: this.formArray.get('0').value.prikaz_group_id,
+        // Optional
+        barcode: this.formArray.get('1').value.barcode,
+        display: this.formArray.get('1').value.display,
+        img_src: this.formArray.get('1').value.img,
+        // Ordering
+        supplier_id: this.formArray.get('2').value.supplier_id,
+        box_qty: this.formArray.get('2').value.box_qty,
+        qty: this.formArray.get('2').value.qty
+      };
+      this.articlesService.addArticle(this.article);
+    } else if (this.mode === 'edit') {
+      const updatedarticle: Article = {
+        // required
+        id: this.article.id,
+        name: this.formArray.get('0').value.name,
+        tax_group_id: this.formArray.get('0').value.tax_group_id,
+        price_buy: this.formArray.get('0').value.price_buy,
+        price_sell: this.formArray.get('0').value.price_sell,
+        unit: this.formArray.get('0').value.unit,
+        art_show_gr_id: this.formArray.get('0').value.art_show_gr_id,
+        prikaz_group_id: this.formArray.get('0').value.prikaz_group_id,
+        // Optional
+        barcode: this.formArray.get('1').value.barcode,
+        display: this.formArray.get('1').value.display,
+        img_src: this.formArray.get('1').value.img,
+        // Ordering
+        supplier_id: this.formArray.get('2').value.supplier_id,
+        box_qty: this.formArray.get('2').value.box_qty,
+        qty: this.formArray.get('2').value.qty
+      };
+      this.articlesService.updateArticle(updatedarticle);
+    }
   }
   ngOnDestroy() {
     this.suppliersSub.unsubscribe();

@@ -18,6 +18,7 @@ export class SuppliersService {
     this.http.get<{message: string, data: Supplier[]}>(BACKEND_URL)
       .subscribe( (suppliersData) => {
         this.suppliers = suppliersData.data;
+        console.log(this.suppliers);
         this.suppliersUpdated.next([...this.suppliers]);
       });
   }
@@ -36,10 +37,15 @@ export class SuppliersService {
         this.router.navigate(['/inputs/suppliers']);
       });
   }
+  updateSupplier(supplier: Supplier) {
+    this.http.put<{message: string, data: number}>(BACKEND_URL + supplier.id, supplier)
+      .subscribe( (responseData) => {
+        this.router.navigate(['/inputs/suppliers']);
+      });
+  }
   deleteSupplier(supplier_id: number) {
     this.http.delete<{message: string, data: any}>(BACKEND_URL + supplier_id)
       .subscribe( (responseData) => {
-        console.log(responseData);
         const updateSuppliers = this.suppliers.filter( supplier => supplier.id !== supplier_id);
         this.suppliers = updateSuppliers;
         this.suppliersUpdated.next([...this.suppliers]);

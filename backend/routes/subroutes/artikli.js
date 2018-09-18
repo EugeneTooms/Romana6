@@ -69,6 +69,54 @@ router.post('', checkAuth,
     });
   });
 
+  router.put('/:id', checkAuth,
+  (req,res,next) => {
+    database.query(`UPDATE articles SET
+    barcode = ?,
+    name = ?,
+    unit = ?,
+    tax_group_id = ?,
+    price_sell = ?,
+    price_buy = ?,
+    display = ?,
+    prikaz_group_id= ?,
+    art_show_gr_id = ?
+    WHERE id = ?`, [
+      req.body.barcode,
+      req.body.name,
+      req.body.unit,
+      req.body.tax_group_id,
+      req.body.price_sell,
+      req.body.price_buy,
+      req.body.display,
+      req.body.prikaz_group_id,
+      req.body.art_show_gr_id,
+      req.params.id] )
+    .then((results) =>{
+      return database.query(`UPDATE bot_articles_details SET
+      supplier_id = ?,
+      qty = ?,
+      box_qty = ?,
+      img_src = ? where article_id = ?`, [
+        req.body.supplier_id,
+        req.body.qty,
+        req.body.box_qty,
+        req.body.img_src,
+        req.params.id]);
+    })
+    .then( (results) => {
+      res.status(200).json({
+        message: 'Success',
+        data: results
+      });
+    })
+    .catch( err => {
+      return res.status(500).json({
+        message: 'Update failed!',
+        error: err
+      })
+    });
+});
   router.delete('/:id', checkAuth,
     (req,res,next) => {
       database.query('DELETE FROM articles WHERE id = ?', req.params.id )

@@ -35,6 +35,12 @@ export class ArticlesService {
         this.router.navigate(['/inputs/articles']);
       });
   }
+  updateArticle(article: Article) {
+    this.http.put<{message: string, data: number}>(BACKEND_URL + article.id, article)
+      .subscribe( (responseData) => {
+        this.router.navigate(['/inputs/articles']);
+      });
+  }
   deleteArticle(article_id: number) {
     this.http.delete<{message: string, data: any}>(BACKEND_URL + article_id)
       .subscribe( (responseData) => {

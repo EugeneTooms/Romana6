@@ -88,24 +88,46 @@ export class SupplierInputComponent implements OnInit {
     if (this.formArray.invalid) {
       return;
     }
-    this.supplier = {
-      // Required
-      id: null, // will get back id from the database
-      name: this.formArray.get('0').value.name,
-      oib: this.formArray.get('0').value.oib,
-      // Contact
-      contact_person: this.formArray.get('1').value.contact_person,
-      city: this.formArray.get('1').value.city,
-      zip: this.formArray.get('1').value.zip,
-      address: this.formArray.get('1').value.address,
-      email: this.formArray.get('1').value.email,
-      phone: this.formArray.get('1').value.phone,
-      // Bank
-      bank_account: this.formArray.get('2').value.bank_account,
-      // Optional
-      display: this.formArray.get('3').value.display,
-      note: this.formArray.get('3').value.note
-    };
-    this.suppliersService.addSupplier(this.supplier);
+    if (this.mode === 'create') {
+      this.supplier = {
+        // Required
+        id: null, // will get back id from the database
+        name: this.formArray.get('0').value.name,
+        oib: this.formArray.get('0').value.oib,
+        // Contact
+        contact_person: this.formArray.get('1').value.contact_person,
+        city: this.formArray.get('1').value.city,
+        zip: this.formArray.get('1').value.zip,
+        address: this.formArray.get('1').value.address,
+        email: this.formArray.get('1').value.email,
+        phone: this.formArray.get('1').value.phone,
+        // Bank
+        bank_account: this.formArray.get('2').value.bank_account,
+        // Optional
+        display: this.formArray.get('3').value.display,
+        note: this.formArray.get('3').value.note
+      };
+      this.suppliersService.addSupplier(this.supplier);
+    } else if (this.mode === 'edit') {
+      const updatedsupplier: Supplier = {
+        // Required
+        id: this.supplier.id,
+        name: this.formArray.get('0').value.name,
+        oib: this.formArray.get('0').value.oib,
+        // Contact
+        contact_person: this.formArray.get('1').value.contact_person,
+        city: this.formArray.get('1').value.city,
+        zip: this.formArray.get('1').value.zip,
+        address: this.formArray.get('1').value.address,
+        email: this.formArray.get('1').value.email,
+        phone: this.formArray.get('1').value.phone,
+        // Bank
+        bank_account: this.formArray.get('2').value.bank_account,
+        // Optional
+        display: this.formArray.get('3').value.display,
+        note: this.formArray.get('3').value.note
+      };
+      this.suppliersService.updateSupplier(updatedsupplier);
+    }
   }
 }
