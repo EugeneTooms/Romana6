@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { environment} from '../../../environments/environment';
 import { Article } from './article.model';
 
@@ -14,7 +16,28 @@ export class ArticlesService {
   constructor(private http: HttpClient, private router: Router) {}
 
   getArticles() {
-    this.http.get<{message: string, data: Article[]}>(BACKEND_URL)
+    this.http.get<{message: string, data: any}>(BACKEND_URL)
+      .pipe(map((articleData) => {
+        return articleData.data.map( article => {
+          return {
+            id: article.id,
+            barcode: article.barcode,
+            tax_group_id: article.tax_group_id,
+            amount: article.amount,
+            price_buy: article.price_buy,
+            price_sell: article.price_sell,
+            unit: article.unit,
+            name: article.name,
+            display: article.display,
+            prikaz_group_id: article.prikaz_group_id,
+            art_show_gr_id: article.art_show_gr_id,
+            supplier_id: article.supplier_id,
+            qty: article.qty,
+            box_qty: article.box_qty,
+            img_src: article.img_src,
+          };
+        });
+      }))
       .subscribe( (articlesData) => {
         this.articles = articlesData.data;
         this.articlesUpdated.next([...this.articles]);

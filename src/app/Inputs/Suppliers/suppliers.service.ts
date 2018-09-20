@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { environment} from '../../../environments/environment';
 import { Supplier } from './supplier.model';
@@ -15,7 +16,25 @@ export class SuppliersService {
   constructor(private http: HttpClient, private router: Router) {}
 
   getSuppliers() {
-    this.http.get<{message: string, data: Supplier[]}>(BACKEND_URL)
+    this.http.get<{message: string, data: any}>(BACKEND_URL)
+      .pipe(map((suppliersData) => {
+      return suppliersData.data.map( supplier => {
+        return {
+          id: supplier.id,
+          name: supplier.name,
+          oib: supplier.oib,
+          address: supplier.address,
+          city: supplier.city,
+          phone: supplier.phone,
+          display: supplier.display,
+          zip: supplier.zip,
+          contact_person: supplier.contact_person,
+          bank_account: supplier.bank_account,
+          email: supplier.email,
+          note: supplier.note,
+        };
+      });
+      }))
       .subscribe( (suppliersData) => {
         this.suppliers = suppliersData.data;
         console.log(this.suppliers);
