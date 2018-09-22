@@ -1,0 +1,15 @@
+
+  <form (submit)="AddTaxGroup(taxForm)" #taxForm="ngForm">
+    <mat-form-field class="naziv">
+      <input placeholder="Name" matInput type="text" name="name" #name="ngModel" [ngModel]="editingTaxGroup?.name" required>
+      <mat-error *ngIf="name.invalid">Input Invalid</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input placeholder="Tax 1" matInput type="number" name="tax_1" #name="ngModel" [ngModel]="editingTaxGroup?.tax_1">
+    </mat-form-field>
+    <mat-form-field>
+      <input placeholder="Tax 2" matInput type="text" name="tax_2" #name="ngModel" [ngModel]="editingTaxGroup?.tax_2">
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit" >Add</button>
+  </form>
+

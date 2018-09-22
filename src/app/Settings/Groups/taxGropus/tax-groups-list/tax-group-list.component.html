@@ -1,0 +1,53 @@
+<mat-spinner *ngIf='isLoading'></mat-spinner>
+<mat-form-field>
+  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+</mat-form-field>
+<div class="mat-elevation-z8">
+
+<table *ngIf='!isLoading' mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+  <!-- Position Column -->
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef> ID. </th>
+    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+  </ng-container>
+
+  <!-- Tax_1 Column -->
+  <ng-container matColumnDef="tax_1">
+    <th mat-header-cell *matHeaderCellDef> Tax 1 </th>
+    <td mat-cell *matCellDef="let element"> {{element.tax_1}} </td>
+  </ng-container>
+  <!-- Tax_2 Column -->
+
+  <ng-container matColumnDef="tax_2">
+    <th mat-header-cell *matHeaderCellDef> Tax 2 </th>
+    <td mat-cell *matCellDef="let element"> {{element.tax_2}} </td>
+  </ng-container>
+
+  <!-- Edit Column -->
+  <ng-container matColumnDef="Edit">
+    <th mat-header-cell *matHeaderCellDef>Edit</th>
+    <td mat-cell *matCellDef="let element">
+      <a mat-raised-button color="accent" (click)="EditTaxGroup(element)">Edit</a>
+    </td>
+  </ng-container>
+
+  <!-- Delete Column -->
+  <ng-container matColumnDef="Delete">
+    <th mat-header-cell *matHeaderCellDef>Delete</th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-raised-button color="warn" (click)="DeleteTaxGroup(element.id)">Delete</button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"> </tr>
+</table>
+<mat-paginator [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
+</div>

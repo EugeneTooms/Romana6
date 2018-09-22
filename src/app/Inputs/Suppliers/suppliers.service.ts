@@ -3,9 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Location } from '@angular/common';
 
 import { environment} from '../../../environments/environment';
 import { Supplier } from './supplier.model';
+
 
 const BACKEND_URL = environment.apiURL + 'suppliers/';
 @Injectable({providedIn : 'root'})
@@ -13,7 +15,8 @@ export class SuppliersService {
   private suppliers: Supplier[] = [];
   private suppliersUpdated = new Subject<Supplier[]>();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private location: Location) {}
+
 
   getSuppliers() {
     this.http.get<{message: string, data: any}>(BACKEND_URL)
@@ -35,9 +38,8 @@ export class SuppliersService {
         };
       });
       }))
-      .subscribe( (suppliersData) => {
-        this.suppliers = suppliersData.data;
-        console.log(this.suppliers);
+      .subscribe(transSuppliers => {
+        this.suppliers = transSuppliers;
         this.suppliersUpdated.next([...this.suppliers]);
       });
   }
@@ -53,13 +55,13 @@ export class SuppliersService {
         supplier.id = responseData.data;
         this.suppliers.push(supplier);
         this.suppliersUpdated.next([...this.suppliers]);
-        this.router.navigate(['/inputs/suppliers']);
+        this.location.back();
       });
   }
   updateSupplier(supplier: Supplier) {
     this.http.put<{message: string, data: number}>(BACKEND_URL + supplier.id, supplier)
       .subscribe( (responseData) => {
-        this.router.navigate(['/inputs/suppliers']);
+        this.location.back();
       });
   }
   deleteSupplier(supplier_id: number) {

@@ -15,8 +15,8 @@
   </mat-toolbar-row>
 </mat-toolbar>
 <button mat-button *ngIf="userIsAuthenticated" [matMenuTriggerFor]="Ulazi">Ulazi</button>
-<!-- <button mat-button [matMenuTriggerFor]="Izlazi">Izlazi</button>
-<button mat-button [matMenuTriggerFor]="Settings">Settings</button> -->
+<!-- <button mat-button [matMenuTriggerFor]="Izlazi">Izlazi</button> -->
+<button mat-button *ngIf="userIsAuthenticated" [matMenuTriggerFor]="Settings">Settings</button>
 
 <mat-menu #Ulazi="matMenu">
   <button mat-menu-item [matMenuTriggerFor]="Artikli" >Artikli</button>
@@ -51,9 +51,16 @@
 
 <mat-menu #Prodaja="matMenu">
   <button mat-menu-item>Stanje</button>
-</mat-menu>
+</mat-menu> -->
 
 <mat-menu #Settings="matMenu">
    <button mat-menu-item>Global</button>
    <button mat-menu-item>Lokacije</button>
-</mat-menu> -->
+   <button mat-menu-item [matMenuTriggerFor]="Groups" >Groups</button>
+</mat-menu>
+
+<mat-menu #Groups="matMenu">
+  <button mat-menu-item routerLink="/settings/groups/tax" routerLinkActive="mat-accent">Tax Groups</button>
+  <button mat-menu-item routerLink="" routerLinkActive="mat-accent">Display Groups</button>
+  <!-- <button mat-menu-item routerLink="" routerLinkActive="mat-accent">Prikaz Groups</button> -->
+</mat-menu>

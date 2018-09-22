@@ -38,8 +38,8 @@ export class ArticlesService {
           };
         });
       }))
-      .subscribe( (articlesData) => {
-        this.articles = articlesData.data;
+      .subscribe(transArticles => {
+        this.articles = transArticles;
         this.articlesUpdated.next([...this.articles]);
       });
   }

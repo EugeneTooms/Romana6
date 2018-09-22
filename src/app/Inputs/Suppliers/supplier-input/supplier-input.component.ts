@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component,  OnInit } from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 
 import { SuppliersService } from '../suppliers.service';
 import { Supplier } from '../supplier.model';
 
+import { MAT_DIALOG_DATA } from '@angular/material';
+
 @Component ({
   selector: 'app-supplier-input',
   templateUrl: './supplier-input.component.html',
   styleUrls: ['./supplier-input.component.css']
 })
+
 export class SupplierInputComponent implements OnInit {
   supplier: Supplier;
   isLoading = true;
@@ -25,6 +28,7 @@ export class SupplierInputComponent implements OnInit {
     public suppliersService: SuppliersService,
     public route: ActivatedRoute) {}
   ngOnInit() {
+
     this.formGroup = this._formBuilder.group({
       formArray: this._formBuilder.array([
         this._formBuilder.group({
@@ -83,6 +87,7 @@ export class SupplierInputComponent implements OnInit {
         this.isLoading = false;
       }
     });
+    console.log(this.route);
   }
   SaveForm() {
     if (this.formArray.invalid) {
