@@ -7,6 +7,8 @@ import { ArticlesService } from '../articles.service';
 import { Article } from '../article.model';
 import { SuppliersService } from '../../Suppliers/suppliers.service';
 import { Supplier } from '../../Suppliers/supplier.model';
+import { TaxGroupService } from '../../../Settings/Groups/taxGropus/tax-group.service';
+import { TaxGroup } from '../../../Settings/Groups/taxGropus/tax-group.model';
 
 
 
@@ -18,7 +20,9 @@ import { Supplier } from '../../Suppliers/supplier.model';
 export class ArticleInputComponent implements OnInit, OnDestroy {
   article: Article;
   suppliers: Supplier[] = [];
+  taxGroups: TaxGroup [] = [];
   private suppliersSub: Subscription;
+  private taxSub: Subscription;
   isLoading = true;
   isLinear = true;
   private mode = 'create';
@@ -30,6 +34,7 @@ export class ArticleInputComponent implements OnInit, OnDestroy {
     private _formBuilder: FormBuilder,
     public articlesService: ArticlesService,
     public suppliersService: SuppliersService,
+    public taxGroupService: TaxGroupService,
     public route: ActivatedRoute) {}
 
   fetchSuppliers() {
@@ -39,19 +44,27 @@ export class ArticleInputComponent implements OnInit, OnDestroy {
         this.suppliers = suppliers;
       }, () => {this.isLoading = false; } );
   }
+  fetchTaxGroups() {
+    this.taxGroupService.getTaxGroups();
+    this.taxSub = this.taxGroupService.getTaxGroupsListener()
+      .subscribe((taxgroups: TaxGroup[]) => {
+        this.taxGroups = taxgroups;
+      }, () => {this.isLoading = false; } );
+  }
 
   ngOnInit() {
     this.fetchSuppliers();
+    this.fetchTaxGroups();
     this.formGroup = this._formBuilder.group({
       formArray: this._formBuilder.array([
         this._formBuilder.group({
           name: new FormControl(null, {validators : [Validators.required]}),
-          tax_group_id: new FormControl(null, {validators : [Validators.required]}),
-          price_buy: new FormControl(null, {validators : [Validators.required]}),
-          price_sell: new FormControl(null, {validators : [Validators.required]}),
-          unit: new FormControl(null, {validators : [Validators.required]}),
-          art_show_gr_id: new FormControl(null, {validators : [Validators.required]}),
-          prikaz_group_id: new FormControl(null, {validators : [Validators.required]})
+          tax_group_id: new FormControl(null),
+          price_buy: new FormControl(null),
+          price_sell: new FormControl(null),
+          unit: new FormControl('litra', {validators : [Validators.required]}),
+          art_show_gr_id: new FormControl(null),
+          prikaz_group_id: new FormControl(null)
         }),
         this._formBuilder.group({
           barcode: new FormControl(null),
@@ -149,5 +162,6 @@ export class ArticleInputComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.suppliersSub.unsubscribe();
+    this.taxSub.unsubscribe();
   }
 }
