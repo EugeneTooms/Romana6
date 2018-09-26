@@ -1,7 +1,7 @@
 {
-"host" : "localhost",
-"user" : "Xabaras",
-"password" : "myh8red",
-"database": "ugo",
+"host" : "www.botanicar.hr",
+"user" : "botani06_admin",
+"password" : "Botanicar2016",
+"database": "botani06_ugo_web",
 "charset" : "utf8"
 }

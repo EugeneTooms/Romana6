@@ -17,15 +17,24 @@ export class ProductsService {
   constructor(private http: HttpClient, private router: Router) {}
 
   getProducts() {
-    this.http.get<{message: string, data: any}>(BACKEND_URL)
+
+    this.http.get<{message: string, products: any, articles: any}>(BACKEND_URL)
       .pipe(map((productsData) => {
-        return productsData.data.map( product => {
+        return  productsData.products.map( product => {
           return {
-            id: product.id
+            id: product.id,
+            name: product.name,
+            tax_group_id : product.tax_group_id,
+            price: product.price,
+            price_1: product.price_1,
+            price_2: product.price_2,
+            price_3: product.price_3,
+            price_4: product.price_4
           };
         });
       }))
-      .subscribe(transProducts => {
+      .subscribe((transProducts) => {
+        console.log(transProducts);
         this.products = transProducts;
         this.productssUpdated.next([...this.products]);
       });

@@ -8,22 +8,33 @@ const Database = require('../../config/database');
 router.get('', checkAuth,
 (req, res, next) =>{
   let database = new Database();
+  let products;
+  let product_details;
   database.query(`SELECT
-  id, barcode, tax_group_id, amount, price_buy, price_sell, unit, name, display, prikaz_group_id, art_show_gr_id, supplier_id, qty, box_qty, img_src
- FROM articles
- Left Join bot_articles_details on article_id = id;
+  id, tax_group_id, name, price, price_1, price_2, price_3, price_4
+  FROM products
   `)
-    .then( (artikli) =>{
-      database.close();
-        res.status(200).json({
-          message: 'Success',
-          data: artikli
-        });
+    .then( (results) =>{
+      products = results;
+      return database.query(`SELECT * FROM product_items`);
       }
-    ).catch( err => {
+    )
+    .then( (results) => {
+      product_details = results;
+    })
+    .then( () => {
       database.close();
+      res.status(200).json({
+        message: 'Success',
+        products: products,
+        articles: product_details
+      });
+    })
+    .catch( err => {
+      database.close();
+      console.log(err);
       return res.status(500).json({
-        messgae: 'Could not retrive articles',
+        messgae: 'Could not retrive products',
         error : err
       });
     });
@@ -51,11 +62,11 @@ router.post('', checkAuth,
       box_qty: req.body.box_qty,
       qty: req.body.qty
     }
-    database.query(`INSERT INTO articles SET ?`, jsonMaster)
+    database.query(`INSERT INTO products SET ?`, jsonMaster)
     .then((results) =>{
       insertId = results.insertId;
       jsonDetails.article_id = insertId
-      return database.query(`INSERT INTO bot_articles_details SET ?`, jsonDetails);
+      return database.query(`INSERT INTO product_items SET ?`, jsonDetails);
     })
     .then( () => {
       database.close();
@@ -76,33 +87,30 @@ router.post('', checkAuth,
   router.put('/:id', checkAuth,
   (req,res,next) => {
     let database = new Database();
-    database.query(`UPDATE articles SET
-    barcode = ?,
+    database.query(`UPDATE products SET
     name = ?,
-    unit = ?,
     tax_group_id = ?,
-    price_sell = ?,
-    price_buy = ?,
-    display = ?,
-    prikaz_group_id= ?,
-    art_show_gr_id = ?
+    price = ?,
+    price_1 = ?,
+    price_2 = ?,
+    price_3 = ?,
+    price_4= ?
     WHERE id = ?`, [
-      req.body.barcode,
       req.body.name,
-      req.body.unit,
       req.body.tax_group_id,
-      req.body.price_sell,
-      req.body.price_buy,
-      req.body.display,
-      req.body.prikaz_group_id,
-      req.body.art_show_gr_id,
+      req.body.price,
+      req.body.price_1,
+      req.body.price_2,
+      req.body.price_3,
+      req.body.price_4,
       req.params.id] )
     .then((results) =>{
-      return database.query(`UPDATE bot_articles_details SET
-      supplier_id = ?,
-      qty = ?,
-      box_qty = ?,
-      img_src = ? where article_id = ?`, [
+      return database.query(`UPDATE product_items SET
+      id = ?,
+      article_id = ?,
+      product_id = ?,
+      amount = ?
+      where product_id = ?`, [
         req.body.supplier_id,
         req.body.qty,
         req.body.box_qty,
@@ -127,7 +135,7 @@ router.post('', checkAuth,
   router.delete('/:id', checkAuth,
     (req,res,next) => {
       let database = new Database();
-      database.query('DELETE FROM articles WHERE id = ?', req.params.id )
+      database.query('DELETE FROM products WHERE id = ?', req.params.id )
       .then((results) =>{
         database.close();
         res.status(200).json({

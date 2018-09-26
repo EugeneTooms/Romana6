@@ -6,7 +6,7 @@ const Database = require('../../config/database');
 const database = new Database();
 
 router.post('/login', (req, res, next) =>{
-  database.query(`SELECT id, username, passkey FROM ugo.users where username = ?`, req.body.username)
+  database.query(`SELECT id, username, passkey FROM users where username = ?`, req.body.username)
     .then( (korisnik) => {
           if (korisnik.length == 0){// Is there a user
             return res.status(401).json(
