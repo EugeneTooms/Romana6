@@ -8,31 +8,42 @@ const Database = require('../../config/database');
 router.get('', checkAuth,
 (req, res, next) =>{
   let database = new Database();
-  let products;
-  let product_details;
   database.query(`SELECT
   id, tax_group_id, name, price, price_1, price_2, price_3, price_4
   FROM products
   `)
     .then( (results) =>{
-      products = results;
-      return database.query(`SELECT * FROM product_items`);
-      }
-    )
-    .then( (results) => {
-      product_details = results;
-    })
-    .then( () => {
       database.close();
       res.status(200).json({
         message: 'Success',
-        products: products,
-        articles: product_details
+        data: results
       });
     })
     .catch( err => {
       database.close();
-      console.log(err);
+      return res.status(500).json({
+        messgae: 'Could not retrive products',
+        error : err
+      });
+    });
+});
+router.get('/:id', checkAuth,
+(req, res, next) =>{
+  let database = new Database();
+  database.query(`SELECT
+  id, tax_group_id, name, price, price_1, price_2, price_3, price_4
+  FROM products
+  WHERE id = ?
+  `, req.params.id)
+    .then( (results) =>{
+      database.close();
+      res.status(200).json({
+        message: 'Success',
+        data: results
+      });
+    })
+    .catch( err => {
+      database.close();
       return res.status(500).json({
         messgae: 'Could not retrive products',
         error : err
@@ -40,6 +51,31 @@ router.get('', checkAuth,
     });
 });
 
+router.get('/details/:id', checkAuth,
+(req, res, next) =>{
+  let database = new Database();
+  let products;
+  let product_details;
+  database.query(`SELECT
+  product_items.article_id, articles.name, product_items.amount FROM product_items
+  Left Join articles on articles.id = product_items.article_id
+  where product_items.product_id = ?
+  `, req.params.id)
+    .then( (results) =>{
+      database.close();
+      res.status(200).json({
+        message: 'Success',
+        data: results
+      });
+    })
+    .catch( err => {
+      database.close();
+      return res.status(500).json({
+        messgae: 'Could not retrive products',
+        error : err
+      });
+    });
+});
 router.post('', checkAuth,
   (req,res, next) => {
     let database = new Database();

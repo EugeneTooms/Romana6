@@ -1,0 +1,14 @@
+mat-card{
+  margin: auto;
+  display: flex;
+  width: 95%;
+}
+.col {
+  float: left;
+}
+.left {
+  flex: 75%;
+}
+.right {
+  flex: 25%;
+}

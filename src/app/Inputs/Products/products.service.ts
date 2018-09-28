@@ -6,21 +6,30 @@ import { map } from 'rxjs/operators';
 
 import { environment} from '../../../environments/environment';
 import { Product } from './product.model';
+import { ProductDetails } from './product-details.model';
 
 
 const BACKEND_URL = environment.apiURL + 'products/';
 @Injectable({providedIn : 'root'})
 export class ProductsService {
   private products: Product[] = [];
-  private productssUpdated = new Subject<Product[]>();
+  private productDetails: ProductDetails[] = [];
+  private productsUpdated = new Subject<Product[]>();
+  private productsDetailsUpdated = new Subject<ProductDetails[]>();
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  getProducts() {
+  getProductsListener() {
+    return this.productsUpdated.asObservable();
+  }
+  getProductDetailsListener() {
+    return this.productsDetailsUpdated.asObservable();
+  }
 
-    this.http.get<{message: string, products: any, articles: any}>(BACKEND_URL)
+  getProducts() {
+    this.http.get<{message: string, data: any}>(BACKEND_URL)
       .pipe(map((productsData) => {
-        return  productsData.products.map( product => {
+        return  productsData.data.map( product => {
           return {
             id: product.id,
             name: product.name,
@@ -34,23 +43,36 @@ export class ProductsService {
         });
       }))
       .subscribe((transProducts) => {
-        console.log(transProducts);
         this.products = transProducts;
-        this.productssUpdated.next([...this.products]);
+        this.productsUpdated.next([...this.products]);
+      });
+  }
+  getProductDetails(id: number) {
+    this.http.get<{message: string, data: any}>(BACKEND_URL + 'details/' + id)
+      .pipe(map((productsData) => {
+        return  productsData.data.map( article => {
+          return {
+            article_id: article.article_id,
+            name: article.name,
+            amount : article.amount,
+          };
+        });
+      }))
+      .subscribe((transProductDetails) => {
+        this.productDetails = transProductDetails;
+        this.productsDetailsUpdated.next([...this.productDetails]);
       });
   }
   getProduct(id: number) {
-    return {...this.products.find(product => product.id === id)};
+    return this.http.get<{message: string, data: any}>(BACKEND_URL + id);
   }
-  getProductsListener() {
-    return this.productssUpdated.asObservable();
-  }
+
   addProduct(product: Product) {
     this.http.post<{message: string, data: number}>(BACKEND_URL, product)
       .subscribe( (responseData) => {
         product.id = responseData.data;
         this.products.push(product);
-        this.productssUpdated.next([...this.products]);
+        this.productsUpdated.next([...this.products]);
         this.router.navigate(['/inputs/products']);
       });
   }
@@ -66,7 +88,7 @@ export class ProductsService {
         console.log(responseData);
         const updateProducts = this.products.filter( product => product.id !== product_id);
         this.products = updateProducts;
-        this.productssUpdated.next([...this.products]);
+        this.productsUpdated.next([...this.products]);
       });
   }
 }

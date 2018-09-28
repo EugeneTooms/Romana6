@@ -1,5 +1,5 @@
 export interface ProductDetails {
-  id: number;
+  article_id: number;
   name: string;
   ammount: number;
 }

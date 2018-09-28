@@ -1,25 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Product } from './product.model';
-import { Subscription } from 'rxjs';
-import { ProductsService } from './products.service';
+import { Component } from '@angular/core';
+
 
 @Component({
-  templateUrl: './products.component.html'
+  templateUrl: './products.component.html',
+  styleUrls: ['./products.component.css']
 })
-export class ProductsComponent implements OnInit, OnDestroy {
-  products: Product[] = [];
-  private productsSub: Subscription;
+export class ProductsComponent {
 
-  constructor (public productsService: ProductsService) {}
-
-  ngOnInit() {
-    this.productsService.getProducts();
-    this.productsSub = this.productsService.getProductsListener()
-      .subscribe((products: Product[]) => {
-        this.products = products;
-      });
-  }
-  ngOnDestroy() {
-    this.productsSub.unsubscribe();
-  }
 }

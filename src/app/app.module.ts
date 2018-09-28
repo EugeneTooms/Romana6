@@ -13,13 +13,15 @@ import { ErrorInterceptor } from './error-interceptor';
 import { HomePageComponent } from './homePage/home-page.component';
 import { AuthModule } from './auth/auth.module';
 import { ErrorComponent } from './error/error.component';
+import { PopUpSelectorComponent } from './popUpSelector/pop-up-selector.components';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationComponent,
     HomePageComponent,
-    ErrorComponent
+    ErrorComponent,
+    PopUpSelectorComponent
   ],
   imports: [
     BrowserModule,
@@ -33,6 +35,6 @@ import { ErrorComponent } from './error/error.component';
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}],
   bootstrap: [AppComponent],
-  entryComponents: [ErrorComponent]
+  entryComponents: [ErrorComponent, PopUpSelectorComponent]
 })
 export class AppModule { }
