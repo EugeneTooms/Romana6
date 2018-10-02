@@ -1,16 +1,18 @@
+
 <mat-card>
   <form (submit)="SaveProduct(productForm)" #productForm="ngForm">
   <mat-card-header>
     <mat-card-title>Product Input</mat-card-title>
     <span class="spacer"></span>
-    <button mat-raised-button color="primary" type="submit">Save</button>
+    <button mat-raised-button color="primary" type="submit" *ngIf="dataSource.data.length > 0">Save</button>
+    <button mat-raised-button color="warn" (click)="AddArticle()" *ngIf="(dataSource.data.length === 0) && !productForm.invalid">No Articles</button>
   </mat-card-header>
   <mat-form-field class="naziv">
     <input placeholder="Name" matInput type="text" name="name" #name="ngModel" [ngModel]="product?.name" required>
     <mat-error *ngIf="name.invalid">Input Invalid</mat-error>
   </mat-form-field>
   <mat-form-field>
-    <input placeholder="Price" matInput type="number" name="price" #name="ngModel" [ngModel]="product?.price">
+    <input placeholder="Price" matInput type="number" name="price" #name="ngModel" [ngModel]="product?.price" required>
   </mat-form-field>
   <mat-form-field>
       <mat-label>Tax Group</mat-label>
@@ -20,7 +22,7 @@
           </mat-option>
       </mat-select>
     </mat-form-field>
-</form>
+  </form>
 </mat-card>
 
 <mat-card *ngIf="!productForm.invalid">
@@ -30,9 +32,9 @@
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
     <!-- Position Column -->
-    <ng-container matColumnDef="article_id">
+    <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef> ID. </th>
-      <td mat-cell *matCellDef="let element"> {{element.article_id}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
     </ng-container>
 
     <!-- Name Column -->
@@ -46,7 +48,7 @@
       <th mat-header-cell *matHeaderCellDef> Amount </th>
       <td mat-cell *matCellDef="let element">
         <mat-form-field>
-          <input matInput type="number" name="amount" #name="ngModel" [ngModel]="element?.amount">
+          <input matInput type="number" name="amount" #name="ngModel" [(ngModel)]="element.amount" required>
         </mat-form-field>
       </td>
     </ng-container>
@@ -55,7 +57,7 @@
     <ng-container matColumnDef="delete">
       <th mat-header-cell *matHeaderCellDef>Remove</th>
       <td mat-cell *matCellDef="let element">
-        <button mat-raised-button color="warn" (click)="RemoveArticle(element.article_id)">Remove</button>
+        <button mat-raised-button color="warn" (click)="RemoveArticle(element.table_id, element.id)">Remove</button>
       </td>
     </ng-container>
 
@@ -64,3 +66,4 @@
   </table>
   <button mat-raised-button color="accent" (click)="AddArticle()">Add Article</button>
 </mat-card>
+

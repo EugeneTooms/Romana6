@@ -32,7 +32,7 @@
           <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>Select</th>
             <td mat-cell *matCellDef="let element">
-              <button mat-raised-button (click)="closeDialog(element.id)">Select</button>
+              <button mat-raised-button (click)="closeDialog(element.id, element.name)">Select</button>
             </td>
           </ng-container>
 

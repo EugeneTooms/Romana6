@@ -54,9 +54,7 @@ router.get('/:id', checkAuth,
 router.get('/details/:id', checkAuth,
 (req, res, next) =>{
   let database = new Database();
-  let products;
-  let product_details;
-  database.query(`SELECT
+  database.query(`SELECT product_items.id,
   product_items.article_id, articles.name, product_items.amount FROM product_items
   Left Join articles on articles.id = product_items.article_id
   where product_items.product_id = ?
@@ -80,29 +78,23 @@ router.post('', checkAuth,
   (req,res, next) => {
     let database = new Database();
     let insertId = 0;
+    let jsonDetails = []
     let jsonMaster = {
-      name : req.body.name,
-      tax_group_id: req.body.tax_group_id,
-      price_buy: req.body.price_buy,
-      price_sell: req.body.price_sell,
-      unit: req.body.unit,
-      art_show_gr_id: req.body.art_show_gr_id,
-      prikaz_group_id: req.body.prikaz_group_id,
-      barcode: req.body.barcode,
-      display: req.body.display
+      name : req.body.product.name,
+      tax_group_id: req.body.product.tax_group_id,
+      price: req.body.product.price,
     };
-    let jsonDetails = {
-      article_id: null,
-      img_src: req.body.img_src,
-      supplier_id: req.body.supplier_id,
-      box_qty: req.body.box_qty,
-      qty: req.body.qty
-    }
     database.query(`INSERT INTO products SET ?`, jsonMaster)
     .then((results) =>{
       insertId = results.insertId;
-      jsonDetails.article_id = insertId
-      return database.query(`INSERT INTO product_items SET ?`, jsonDetails);
+      req.body.productDetails.forEach(element => {
+        jsonDetails.push([
+          product_id = insertId,
+          article_id = element.id,
+          amount = element.amount
+        ])
+      });
+      return database.query(`INSERT INTO product_items (product_id,article_id,amount) VALUES ?`, [jsonDetails]);
     })
     .then( () => {
       database.close();
@@ -122,6 +114,8 @@ router.post('', checkAuth,
 
   router.put('/:id', checkAuth,
   (req,res,next) => {
+    let jsonDetails = []
+    let deleted = []
     let database = new Database();
     database.query(`UPDATE products SET
     name = ?,
@@ -132,28 +126,35 @@ router.post('', checkAuth,
     price_3 = ?,
     price_4= ?
     WHERE id = ?`, [
-      req.body.name,
-      req.body.tax_group_id,
-      req.body.price,
-      req.body.price_1,
-      req.body.price_2,
-      req.body.price_3,
-      req.body.price_4,
+      req.body.product.name,
+      req.body.product.tax_group_id,
+      req.body.product.price,
+      req.body.product.price_1,
+      req.body.product.price_2,
+      req.body.product.price_3,
+      req.body.product.price_4,
       req.params.id] )
-    .then((results) =>{
-      return database.query(`UPDATE product_items SET
-      id = ?,
-      article_id = ?,
-      product_id = ?,
-      amount = ?
-      where product_id = ?`, [
-        req.body.supplier_id,
-        req.body.qty,
-        req.body.box_qty,
-        req.body.img_src,
-        req.params.id]);
-    })
     .then( (results) => {
+        if (req.body.removedDetails.length > 0) {
+          req.body.removedDetails.forEach(element => {
+            deleted.push([
+              id = element.table_id
+            ])
+          });
+          return database.query(`DELETE from product_items WHERE id IN ( ? )`, [deleted]);
+        }
+      })
+    .then((results) =>{
+      req.body.productDetails.forEach(element => {
+        jsonDetails.push([
+          product_id = req.params.id,
+          article_id = element.id,
+          amount = element.amount
+        ])
+      });
+      return database.query(`INSERT INTO product_items (product_id,article_id,amount) VALUES ?
+      ON DUPLICATE KEY UPDATE amount=VALUES(amount)`, [jsonDetails]);
+    }).then( (results) => {
       database.close();
       res.status(200).json({
         message: 'Success',

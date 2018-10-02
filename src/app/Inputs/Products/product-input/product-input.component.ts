@@ -25,11 +25,12 @@ export class ProductInputComponent implements OnInit, OnDestroy {
   private productDetailsSub: Subscription;
   product: Product;
   productDetails: ProductDetails[] = [];
+  articlesToRemove: ProductDetails[] = [];
   private mode = 'create';
   private productId: number;
 
 
-  displayedColumns: string[] = ['article_id', 'name', 'amount', 'delete'];
+  displayedColumns: string[] = ['id', 'name', 'amount', 'delete'];
   dataSource = new MatTableDataSource(this.productDetails);
   constructor(
     private dialog: MatDialog,
@@ -76,18 +77,45 @@ export class ProductInputComponent implements OnInit, OnDestroy {
         this.fetchProductDetails();
         this.isLoading = false;
       } else {
+        this.product = {
+          id: null,
+          name: null,
+          tax_group_id: null,
+          price: null,
+          price_1: null,
+          price_2: null,
+          price_3: null,
+          price_4: null,
+        };
         this.mode = 'create';
         this.productId = null;
         this.isLoading = false;
       }
     });
   }
-  RemoveArticle(article_id: number) {
-    const updateProductDetails = this.productDetails.filter( article => article.article_id !== article_id);
+  RemoveArticle(table_id: number, article_id: number) {
+    if (table_id) {
+      const toremove: ProductDetails = {table_id: table_id};
+      this.articlesToRemove.push(toremove);
+    }
+    const updateProductDetails = this.productDetails.filter( article => article.id !== article_id);
     this.productDetails = updateProductDetails;
-    this.dataSource.data = this.productDetails;
+    this.dataSource.data = updateProductDetails;
   }
-  SaveProduct(form: NgForm) {}
+  SaveProduct(form: NgForm) {
+    if (form.invalid) {
+      return;
+    }
+    this.product = {id: this.product.id, name: form.value.name, tax_group_id: form.value.tax_group, price: form.value.price};
+    this.productDetails = this.dataSource.data;
+    if (this.mode === 'create') {
+      this.productsService.addProduct(this.product, this.productDetails);
+    }
+    if (this.mode === 'edit') {
+      this.productsService.updateProduct(this.product, this.productDetails, this.articlesToRemove);
+    }
+    form.resetForm();
+  }
 
   AddArticle() {
     const dialogRef = this.dialog.open(PopUpSelectorComponent, {
@@ -95,14 +123,22 @@ export class ProductInputComponent implements OnInit, OnDestroy {
       width: '70%',
       data: {data: 'Article'}});
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        if (!(this.productDetails.find( article => article.id === result.id)))  {
+          const newproduct: ProductDetails = {table_id: null, id: result.id, name: result.name, amount: null};
+          this.productDetails.push(newproduct);
+          this.dataSource.data = this.productDetails;
+        }
+      }
     });
   }
 
 
   ngOnDestroy() {
     this.taxSub.unsubscribe();
-    this.productDetailsSub.unsubscribe();
+    if (this.mode === 'edit') {
+      this.productDetailsSub.unsubscribe();
+    }
   }
 }

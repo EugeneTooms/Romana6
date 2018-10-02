@@ -56,7 +56,6 @@ export class TaxGroupService {
   deleteTaxGroup(taxGroup_id: number) {
     this.http.delete<{message: string, data: any}>(BACKEND_URL + taxGroup_id)
       .subscribe( (responseData) => {
-        console.log(responseData);
         const updatedtaxGroups = this.taxGroups.filter( taxGroup => taxGroup.id !== taxGroup_id);
         this.taxGroups = updatedtaxGroups;
         this.taxGroupsUpdated.next([...this.taxGroups]);

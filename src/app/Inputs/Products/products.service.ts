@@ -52,7 +52,8 @@ export class ProductsService {
       .pipe(map((productsData) => {
         return  productsData.data.map( article => {
           return {
-            article_id: article.article_id,
+            table_id: article.id,
+            id: article.article_id,
             name: article.name,
             amount : article.amount,
           };
@@ -67,8 +68,8 @@ export class ProductsService {
     return this.http.get<{message: string, data: any}>(BACKEND_URL + id);
   }
 
-  addProduct(product: Product) {
-    this.http.post<{message: string, data: number}>(BACKEND_URL, product)
+  addProduct(product: Product, productDetails: ProductDetails[]) {
+    this.http.post<{message: string, data: number}>(BACKEND_URL, {product, productDetails})
       .subscribe( (responseData) => {
         product.id = responseData.data;
         this.products.push(product);
@@ -76,8 +77,8 @@ export class ProductsService {
         this.router.navigate(['/inputs/products']);
       });
   }
-  updateProduct(product: Product) {
-    this.http.put<{message: string, data: number}>(BACKEND_URL + product.id, product)
+  updateProduct(product: Product, productDetails: ProductDetails[], removedDetails: ProductDetails[]) {
+    this.http.put<{message: string, data: number}>(BACKEND_URL + product.id, {product, productDetails, removedDetails})
       .subscribe( (responseData) => {
         this.router.navigate(['/inputs/products']);
       });

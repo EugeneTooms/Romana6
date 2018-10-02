@@ -3,8 +3,8 @@ export interface Product {
   name: string;
   tax_group_id: number;
   price: number;
-  price_1: number;
-  price_2: number;
-  price_3: number;
-  price_4: number;
+  price_1?: number;
+  price_2?: number;
+  price_3?: number;
+  price_4?: number;
 }

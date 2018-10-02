@@ -43,7 +43,6 @@ export class PopUpSelectorComponent implements OnInit, OnDestroy {
       }, () => {this.isLoading = false; });
   }
   ngOnInit() {
-    console.log(this.selector.data);
     switch (this.selector.data) {
       case 'Article': {
 
@@ -60,8 +59,8 @@ export class PopUpSelectorComponent implements OnInit, OnDestroy {
       }
    }
   }
-  closeDialog(id: number) {
-    this.dialogRef.close(id);
+  closeDialog(id: number, name: string) {
+    this.dialogRef.close({id, name});
   }
   ngOnDestroy() {
     switch (this.selector.data) {
