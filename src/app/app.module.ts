@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AngularMaterialModule } from './angular-material.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { NavigationComponent } from './navigation/navigation.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthInterceptor } from './auth/auth-interceptor';
@@ -29,6 +30,7 @@ import { PopUpSelectorComponent } from './popUpSelector/pop-up-selector.componen
     HttpClientModule,
     BrowserAnimationsModule,
     AngularMaterialModule,
+    FlexLayoutModule,
     AuthModule
   ],
   providers: [
