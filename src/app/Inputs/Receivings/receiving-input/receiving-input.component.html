@@ -26,12 +26,12 @@
   </p>
   <p>
   <mat-form-field>
-    <input matInput [matDatepicker]="Docpicker" placeholder="Datum Dokumenta">
+    <input matInput [matDatepicker]="Docpicker" placeholder="Datum Dokumenta" [value]="receiving?.document_Date">
     <mat-datepicker-toggle matSuffix [for]="Docpicker"></mat-datepicker-toggle>
     <mat-datepicker #Docpicker></mat-datepicker>
   </mat-form-field>
   <mat-form-field>
-    <input matInput [matDatepicker]="Inputpicker" placeholder="Datum Unosa">
+    <input matInput [matDatepicker]="Inputpicker" placeholder="Datum Unosa" [value]="receiving?.date">
     <mat-datepicker-toggle matSuffix [for]="Inputpicker"></mat-datepicker-toggle>
     <mat-datepicker #Inputpicker></mat-datepicker>
   </mat-form-field>
