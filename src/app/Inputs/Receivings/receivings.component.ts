@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
 @Component({
-  templateUrl: './receivings.components.html'
+  templateUrl: './receivings.component.html'
 })
 export class ReceivingsComponent {}

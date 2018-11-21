@@ -13,7 +13,9 @@ import {
   MatIconModule,
   MatStepperModule,
   MatSelectModule,
-  MatDialogModule
+  MatDialogModule,
+  MatDatepickerModule,
+  MatNativeDateModule
   } from '@angular/material';
 
 @NgModule({
@@ -31,7 +33,9 @@ import {
       MatIconModule,
       MatStepperModule,
       MatSelectModule,
-      MatDialogModule
+      MatDialogModule,
+      MatDatepickerModule,
+      MatNativeDateModule
     ]
 })
 export class AngularMaterialModule {}

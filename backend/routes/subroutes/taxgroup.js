@@ -20,6 +20,12 @@ router.get('', checkAuth,
       }
     )
     .catch( err => {
+      if(err === 'disconnected'){
+        return res.status(500).json({
+          message: 'Databse server down',
+          error : err
+        });
+      }
       database.close();
       return res.status(500).json({
         message: 'Could not retrive suppliers',
@@ -41,6 +47,12 @@ router.post('', checkAuth,
       });
     })
     .catch( err => {
+      if(err === 'disconnected'){
+        return res.status(500).json({
+          message: 'Databse server down',
+          error : err
+        });
+      }
       database.close();
       return res.status(500).json({
         message: 'Insert failed!',
@@ -69,6 +81,12 @@ router.post('', checkAuth,
       });
     })
     .catch( err => {
+      if(err === 'disconnected'){
+        return res.status(500).json({
+          message: 'Databse server down',
+          error : err
+        });
+      }
       database.close();
       return res.status(500).json({
         message: 'Update failed!',
@@ -89,6 +107,12 @@ router.post('', checkAuth,
         });
       })
       .catch( err => {
+        if(err === 'disconnected'){
+          return res.status(500).json({
+            message: 'Databse server down',
+            error : err
+          });
+        }
         database.close();
         return res.status(500).json({
           message: 'Delete failed!',

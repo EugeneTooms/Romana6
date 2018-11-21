@@ -8,9 +8,17 @@ const Database = require('../../config/database');
 router.get('', checkAuth,
 (req, res, next) =>{
   let database = new Database();
-  database.query(`SELECT
-  id, tax_group_id, name, price, price_1, price_2, price_3, price_4
-  FROM products
+  database.query(`SELECT receivings.id,
+  supplier_id,
+  suppliers.name as supplier_name,
+  price_buy,
+  price_sell,
+  date,
+  receivings.note,
+  document_date,
+  number,
+  posted from receivings
+  Left Join suppliers on suppliers.id = receivings.supplier_id
   `)
     .then( (results) =>{
       database.close();
@@ -28,7 +36,7 @@ router.get('', checkAuth,
       }
       database.close();
       return res.status(500).json({
-        messgae: 'Could not retrive products',
+        messgae: 'Could not retrive receivings',
         error : err
       });
     });
@@ -36,10 +44,18 @@ router.get('', checkAuth,
 router.get('/:id', checkAuth,
 (req, res, next) =>{
   let database = new Database();
-  database.query(`SELECT
-  id, tax_group_id, name, price, price_1, price_2, price_3, price_4
-  FROM products
-  WHERE id = ?
+  database.query(`SELECT receivings.id,
+  supplier_id,
+  suppliers.name,
+  price_buy,
+  price_sell,
+  date,
+  receivings.note,
+  document_date,
+  number,
+  posted from receivings
+  Left Join suppliers on suppliers.id = receivings.supplier_id
+  WHERE receivings.id = ?
   `, req.params.id)
     .then( (results) =>{
       database.close();
@@ -57,7 +73,7 @@ router.get('/:id', checkAuth,
       }
       database.close();
       return res.status(500).json({
-        messgae: 'Could not retrive products',
+        messgae: 'Could not retrive receivings',
         error : err
       });
     });
@@ -66,10 +82,16 @@ router.get('/:id', checkAuth,
 router.get('/details/:id', checkAuth,
 (req, res, next) =>{
   let database = new Database();
-  database.query(`SELECT product_items.id,
-  product_items.article_id, articles.name, product_items.amount FROM product_items
-  Left Join articles on articles.id = product_items.article_id
-  where product_items.product_id = ?
+  database.query(`SELECT receiving_items.id,
+  receiving_id,
+  article_id,
+  articles.name,
+  receiving_items.amount,
+  receiving_items.price_buy,
+  receiving_items.price,
+  receiving_items.discount  from receiving_items
+  Left Join articles on articles.id = receiving_items.article_id
+  Where receiving_id = ?
   `, req.params.id)
     .then( (results) =>{
       database.close();
@@ -87,7 +109,7 @@ router.get('/details/:id', checkAuth,
       }
       database.close();
       return res.status(500).json({
-        messgae: 'Could not retrive products',
+        messgae: 'Could not retrive receivings',
         error : err
       });
     });
@@ -202,7 +224,7 @@ router.post('', checkAuth,
   router.delete('/:id', checkAuth,
     (req,res,next) => {
       let database = new Database();
-      database.query('DELETE FROM products WHERE id = ?', req.params.id )
+      database.query('DELETE FROM receivings WHERE id = ?', req.params.id )
       .then((results) =>{
         database.close();
         res.status(200).json({

@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiURL : ''
+  apiURL : 'http://barbara-env.xyapyzpity.us-east-2.elasticbeanstalk.com/ang/'
 };

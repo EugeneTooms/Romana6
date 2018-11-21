@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 
 import { environment} from '../../environments/environment';
 import { AuthData } from './auth-data.model';
-const BACKEND_URL = environment.apiURL + '/auth/';
+const BACKEND_URL = environment.apiURL + 'auth/';
 
 @Injectable({providedIn : 'root'})
 export class AuthService {
