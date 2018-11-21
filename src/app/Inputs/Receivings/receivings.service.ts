@@ -73,21 +73,21 @@ export class ReceivingsService {
     return this.http.get<{message: string, data: any}>(BACKEND_URL + id);
   }
 
-  // addReceiving(product: Product, productDetails: ProductDetails[]) {
-  //   this.http.post<{message: string, data: number}>(BACKEND_URL, {product, productDetails})
-  //     .subscribe( (responseData) => {
-  //       product.id = responseData.data;
-  //       this.products.push(product);
-  //       this.productsUpdated.next([...this.products]);
-  //       this.router.navigate(['/inputs/products']);
-  //     });
-  // }
-  // updateReceiving(product: Product, productDetails: ProductDetails[], removedDetails: ProductDetails[]) {
-  //   this.http.put<{message: string, data: number}>(BACKEND_URL + product.id, {product, productDetails, removedDetails})
-  //     .subscribe( (responseData) => {
-  //       this.router.navigate(['/inputs/products']);
-  //     });
-  // }
+  addReceiving(receiving: Receiving, receivingDetails: ReceivingDetails[]) {
+    this.http.post<{message: string, data: number}>(BACKEND_URL, {receiving, receivingDetails})
+      .subscribe( (responseData) => {
+        receiving.id = responseData.data;
+        this.receivings.push(receiving);
+        this.receivingsUpdated.next([...this.receivings]);
+        this.router.navigate(['/inputs/receivings']);
+      });
+  }
+  updateReceiving(receiving: Receiving, receivingDetails: ReceivingDetails[], removedDetails: ReceivingDetails[]) {
+    this.http.put<{message: string, data: number}>(BACKEND_URL + receiving.id, {receiving, receivingDetails, removedDetails})
+      .subscribe( (responseData) => {
+        this.router.navigate(['/inputs/receivings']);
+      });
+  }
   DeleteReceiving(receiving_id: number) {
     this.http.delete<{message: string, data: any}>(BACKEND_URL + receiving_id)
       .subscribe( (responseData) => {

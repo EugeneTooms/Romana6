@@ -94,7 +94,22 @@ export class ReceivingInputComponent implements OnInit, OnDestroy {
     });
   }
   SaveReceiving(form: NgForm) {
-
+    if (form.invalid) {
+      return;
+    }
+    this.receiving = {id: null,
+      number: this.receiving.number,
+      supplier_id: form.value.supplier_id,
+      price_buy: form.value.price_buy,
+      document_Date: form.value.document_Date};
+    this.receivingDetails = this.dataSource.data;
+    if (this.mode === 'create') {
+      this.receivingsService.addReceiving(this.receiving, this.receivingDetails);
+    }
+    if (this.mode === 'edit') {
+      this.receivingsService.updateReceiving(this.receiving, this.receivingDetails, this.articlesToRemove);
+    }
+    form.resetForm();
   }
   RemoveArticle(table_id: number) {
     if (table_id) {
