@@ -97,8 +97,8 @@ export class ReceivingInputComponent implements OnInit, OnDestroy {
     if (form.invalid) {
       return;
     }
-    this.receiving = {id: null,
-      number: this.receiving.number,
+    this.receiving = {id: this.receiving.id,
+      number: form.value.number,
       supplier_id: form.value.supplier_id,
       price_buy: form.value.price_buy,
       document_Date: form.value.document_Date};

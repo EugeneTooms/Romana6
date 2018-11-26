@@ -120,21 +120,21 @@ router.post('', checkAuth,
     let insertId = 0;
     let jsonDetails = []
     let jsonMaster = {
-      name : req.body.product.name,
-      tax_group_id: req.body.product.tax_group_id,
-      price: req.body.product.price,
+      number : req.body.receiving.number,
+      supplier_id: req.body.receiving.supplier_id,
+      price_buy: req.body.receiving.price_buy,
     };
-    database.query(`INSERT INTO products SET ?`, jsonMaster)
+    database.query(`INSERT INTO receivings SET ?`, jsonMaster)
     .then((results) =>{
       insertId = results.insertId;
-      req.body.productDetails.forEach(element => {
+      req.body.receivingDetails.forEach(element => {
         jsonDetails.push([
-          product_id = insertId,
-          article_id = element.id,
+          receiving_id = insertId,
+          article_id = element.article_id,
           amount = element.amount
         ])
       });
-      return database.query(`INSERT INTO product_items (product_id,article_id,amount) VALUES ?`, [jsonDetails]);
+      return database.query(`INSERT INTO receiving_items (receiving_id,article_id,amount) VALUES ?`, [jsonDetails]);
     })
     .then( () => {
       database.close();
@@ -163,22 +163,16 @@ router.post('', checkAuth,
     let jsonDetails = []
     let deleted = []
     let database = new Database();
-    database.query(`UPDATE products SET
-    name = ?,
-    tax_group_id = ?,
-    price = ?,
-    price_1 = ?,
-    price_2 = ?,
-    price_3 = ?,
-    price_4= ?
+    database.query(`UPDATE receivings SET
+    number = ?,
+    supplier_id = ?,
+    price_buy = ?,
+    document_Date = ?
     WHERE id = ?`, [
-      req.body.product.name,
-      req.body.product.tax_group_id,
-      req.body.product.price,
-      req.body.product.price_1,
-      req.body.product.price_2,
-      req.body.product.price_3,
-      req.body.product.price_4,
+      req.body.receiving.number,
+      req.body.receiving.supplier_id,
+      req.body.receiving.price_buy,
+      req.body.receiving.document_Date,
       req.params.id] )
     .then( (results) => {
         if (req.body.removedDetails.length > 0) {
@@ -187,18 +181,19 @@ router.post('', checkAuth,
               id = element.table_id
             ])
           });
-          return database.query(`DELETE from product_items WHERE id IN ( ? )`, [deleted]);
+          return database.query(`DELETE from receiving_items WHERE id IN ( ? )`, [deleted]);
         }
       })
     .then((results) =>{
-      req.body.productDetails.forEach(element => {
+      req.body.receivingDetails.forEach(element => {
         jsonDetails.push([
-          product_id = req.params.id,
-          article_id = element.id,
+          id = element.table_id,
+          receiving_id = req.params.id,
+          article_id = element.article_id,
           amount = element.amount
         ])
       });
-      return database.query(`INSERT INTO product_items (product_id,article_id,amount) VALUES ?
+      return database.query(`INSERT INTO receiving_items (id,receiving_id,article_id,amount) VALUES ?
       ON DUPLICATE KEY UPDATE amount=VALUES(amount)`, [jsonDetails]);
     }).then( (results) => {
       database.close();

@@ -4,8 +4,8 @@
   <mat-card-header>
     <mat-card-title>Receiving Input</mat-card-title>
     <span class="spacer"></span>
-    <!-- <button mat-raised-button color="primary" type="submit" *ngIf="dataSource.data.length > 0">Save</button>
-    <button mat-raised-button color="warn" (click)="AddArticle()" *ngIf="(dataSource.data.length === 0) && !productForm.invalid">No Articles</button> -->
+    <button mat-raised-button color="primary" type="submit" *ngIf="dataSource.data.length > 0">Save</button>
+    <button mat-raised-button color="warn" (click)="AddArticle()" *ngIf="(dataSource.data.length === 0) && !receivingForm.invalid">No Articles</button>
   </mat-card-header>
   <mat-form-field class="number">
     <input placeholder="number" matInput type="text" name="number" #number="ngModel" [ngModel]="receiving?.number" required>
