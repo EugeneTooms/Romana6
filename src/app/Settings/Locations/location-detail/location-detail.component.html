@@ -1,0 +1,55 @@
+<mat-card-title>{{currentLocation.location_name}}</mat-card-title>
+<mat-list role="list" *ngIf="mode === 'locations'">
+  <mat-list-item *ngFor="let location of locations" role="listitem">
+      <button mat-menu-item routerLink="/settings/locations/{{location.id}}">{{location.location_name}}</button>
+      <button mat-icon-button color="warn">
+          <mat-icon aria-label="Delete icon">clear</mat-icon>
+      </button>
+  </mat-list-item>
+  <mat-list-item role="listitem">
+      <form (submit)="AddLocation(locationForm)" #locationForm="ngForm">
+      <mat-form-field class="naziv">
+          <input placeholder="Name" matInput type="text" name="naziv" ngModel required>
+          <mat-error>Input Invalid</mat-error>
+        </mat-form-field>
+    <button mat-raised-button color="primary" type="submit" >+ADD</button>
+    </form>
+  </mat-list-item>
+</mat-list>
+
+
+<!-- <mat-list role="list" *ngIf="mode === 'articles'">
+    <mat-list-item *ngFor="let article of locationArticles" role="listitem">
+        <button mat-menu-item>{{article.name}}</button>
+    </mat-list-item>
+    <mat-list-item role="listitem">
+      <mat-form-field class="naziv">
+          <input placeholder="Name" matInput type="text" name="name"  required>
+          <mat-error>Input Invalid</mat-error>
+      </mat-form-field>
+      <button mat-raised-button color="primary" >+ADD</button>
+    </mat-list-item>
+  </mat-list> -->
+  <div *ngIf="mode === 'articles'">
+  <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let article of locationArticles" cdkDrag>
+      <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+      {{article.indeks}} - {{article.name}}
+      <button mat-icon-button color="warn" (click)="RemoveArticle(article.article_id)">
+          <mat-icon aria-label="Delete icon">clear</mat-icon>
+      </button>
+    </div>
+  </div>
+  <button mat-raised-button color="accent" (click)="AddArticle()">Add Article</button>
+</div>
+<div *ngIf="mode === 'empty'">
+  <form (submit)="AddLocation(locationForm)" #locationForm="ngForm">
+    <mat-form-field class="naziv">
+      <input placeholder="Name" matInput type="text" name="naziv" ngModel required>
+      <mat-error>Input Invalid</mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit" >+Add Location</button>
+    </form>
+    <h4>Or</h4>
+  <button mat-raised-button color="accent" (click)="AddArticle()">Add Article</button>
+</div>

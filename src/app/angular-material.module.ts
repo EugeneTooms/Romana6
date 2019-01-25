@@ -15,11 +15,15 @@ import {
   MatSelectModule,
   MatDialogModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+  MatListModule
   } from '@angular/material';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
     exports: [
+      FlexLayoutModule,
+      MatListModule,
       MatToolbarModule,
       MatInputModule,
       MatCardModule,

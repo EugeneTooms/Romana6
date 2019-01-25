@@ -1,0 +1,18 @@
+<mat-list role="list">
+  <mat-list-item *ngFor="let location of locations" role="listitem">
+    <button mat-menu-item routerLink="/settings/locations/{{location.id}}">{{location.location_name}}</button>
+    <button mat-icon-button color="warn">
+        <mat-icon aria-label="Delete icon">clear</mat-icon>
+    </button>
+  </mat-list-item>
+  <mat-list-item role="listitem">
+      <form (submit)="AddLocation(locationForm)" #locationForm="ngForm">
+      <mat-form-field class="naziv">
+          <input placeholder="Name" matInput type="text" name="naziv" ngModel required>
+          <mat-error>Input Invalid</mat-error>
+        </mat-form-field>
+    <button mat-raised-button color="primary" type="submit" >+ADD</button>
+    </form>
+  </mat-list-item>
+</mat-list>
+

@@ -3,7 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 
 
 const routes: Routes = [
-   {path: 'groups', loadChildren: './Groups/groups.module#GroupsModule'}
+   {path: 'groups', loadChildren: './Groups/groups.module#GroupsModule'},
+   {path: 'locations', loadChildren: './Locations/locations.module#LocationsModule'}
 ];
 
 @NgModule({

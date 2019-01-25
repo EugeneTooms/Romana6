@@ -10,5 +10,6 @@ router.use('/suppliers', require('./subroutes/suppliers'));
 router.use('/products', require('./subroutes/products'));
 router.use('/receivings', require('./subroutes/receivings'));
 router.use('/taxgroup', require('./subroutes/taxgroup'));
+router.use('/locations', require('./subroutes/locations'));
 
 module.exports = router;

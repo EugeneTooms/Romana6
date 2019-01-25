@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { AngularMaterialModule } from '../../angular-material.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ReceivingsRoutingModule } from './receivings-routing';
-import { FlexLayoutModule } from '@angular/flex-layout';
+
 
 import { ReceivingsListComponent } from './receivings-list/receivings-list.component';
 import { ReceivingsComponent } from './receivings.component';
@@ -21,8 +21,7 @@ import { ReceivingInputComponent } from './receiving-input/receiving-input.compo
     AngularMaterialModule,
     ReactiveFormsModule,
     FormsModule,
-    ReceivingsRoutingModule,
-    FlexLayoutModule
+    ReceivingsRoutingModule
  ]
 })
 export class ReceivingsModule {}

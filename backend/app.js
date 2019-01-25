@@ -7,7 +7,7 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-// app.use("/", express.static(path.join(__dirname, "angular"))); // OVO JE ZA ANGULAR ako ce biti single Server
+app.use("/", express.static(path.join(__dirname, "angular"))); // OVO JE ZA ANGULAR ako ce biti single Server
 
 app.use((req,res,next)=>{
   res.setHeader('Access-Control-Allow-Origin','*');
@@ -17,8 +17,8 @@ app.use((req,res,next)=>{
 });
 
 app.use('/ang', angRoutes);
-// app.use((req, res, next) => { // OVO JE ZA ANGULAR ako ce biti single Server
-//   res.sendFile(path.join(__dirname, "angular", "index.html"));
-// });
+app.use((req, res, next) => { // OVO JE ZA ANGULAR ako ce biti single Server
+  res.sendFile(path.join(__dirname, "angular", "index.html"));
+});
 
 module.exports = app;
