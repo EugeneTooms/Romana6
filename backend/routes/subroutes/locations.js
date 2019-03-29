@@ -5,7 +5,7 @@ const router = express.Router();
 const checkAuth = require('../../middleware/check-auth');
 const Database = require('../../config/database');
 
-router.get('', checkAuth,
+router.get('',
 (req, res, next) =>{
   let database = new Database();
   database.query(`SELECT
@@ -33,7 +33,7 @@ router.get('', checkAuth,
       });
     });
 });
-router.get('/articles/:id', checkAuth,
+router.get('/articles/:id',
 (req, res, next) =>{
   let database = new Database();
   database.query(`SELECT
@@ -64,7 +64,7 @@ router.get('/articles/:id', checkAuth,
     });
 });
 
-router.post('', checkAuth,
+router.post('',
   (req,res, next) => {
     let database = new Database();
     let insertId = 0;
@@ -96,7 +96,7 @@ router.post('', checkAuth,
     });
   });
 
-  router.put('/:id', checkAuth,
+  router.put('/:id',
   (req,res,next) => {
     let database = new Database();
     database.query(`UPDATE bot_locations SET
@@ -125,7 +125,7 @@ router.post('', checkAuth,
       })
     });
 });
-router.delete('/:id', checkAuth,
+router.delete('/:id',
     (req,res,next) => {
       let database = new Database();
       database.query('DELETE FROM bot_locations WHERE id = ?', req.params.id )

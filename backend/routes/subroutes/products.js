@@ -5,7 +5,7 @@ const router = express.Router();
 const checkAuth = require('../../middleware/check-auth');
 const Database = require('../../config/database');
 
-router.get('', checkAuth,
+router.get('',
 (req, res, next) =>{
   let database = new Database();
   database.query(`SELECT
@@ -33,7 +33,7 @@ router.get('', checkAuth,
       });
     });
 });
-router.get('/:id', checkAuth,
+router.get('/:id',
 (req, res, next) =>{
   let database = new Database();
   database.query(`SELECT
@@ -63,7 +63,7 @@ router.get('/:id', checkAuth,
     });
 });
 
-router.get('/details/:id', checkAuth,
+router.get('/details/:id',
 (req, res, next) =>{
   let database = new Database();
   database.query(`SELECT product_items.id,
@@ -92,7 +92,7 @@ router.get('/details/:id', checkAuth,
       });
     });
 });
-router.post('', checkAuth,
+router.post('',
   (req,res, next) => {
     let database = new Database();
     let insertId = 0;
@@ -136,7 +136,7 @@ router.post('', checkAuth,
     });
   });
 
-  router.put('/:id', checkAuth,
+  router.put('/:id',
   (req,res,next) => {
     let jsonDetails = []
     let deleted = []
@@ -199,7 +199,7 @@ router.post('', checkAuth,
       })
     });
 });
-  router.delete('/:id', checkAuth,
+  router.delete('/:id',
     (req,res,next) => {
       let database = new Database();
       database.query('DELETE FROM products WHERE id = ?', req.params.id )
